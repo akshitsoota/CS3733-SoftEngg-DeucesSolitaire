@@ -116,11 +116,11 @@ public class DeucesSolitaire extends Solitaire {
 		scoreView.setBounds(260 + (9 * cardImages.getWidth()), 20, 160, 60); // TODO: Fix the width and height as well
 		this.container.addWidget(scoreView); // Add this IntegerView to be shown to the user
 		
-		stockPileCountView = new IntegerView(getScore()); // TODO: Fix the model it is getting its information from
+		stockPileCountView = new IntegerView(getNumLeft()); // TODO: Fix the model it is getting its information from
 		stockPileCountView.setBounds(60, 50 + (2 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
 		this.container.addWidget(stockPileCountView); // Add this IntegerView to be shown to the user as well
 		
-		wastePileCountView = new IntegerView(getScore()); // TODO: Fix the model it is getting its information from
+		wastePileCountView = new IntegerView(getNumLeft()); // TODO: Fix the model it is getting its information from
 		wastePileCountView.setBounds(80 + cardImages.getWidth(), 50 + (2 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
 		this.container.addWidget(wastePileCountView); // Add this IntegerView to the container to be shown to the user as well
 	}
