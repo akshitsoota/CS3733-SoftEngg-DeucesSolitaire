@@ -17,22 +17,22 @@ import ks.launcher.Main;
 
 public class DeucesSolitaire extends Solitaire {
 
-	private static final int TOTAL_PILE_COUNT = 8;
-	private static final int TOTAL_COLUMN_COUNT = 10;
-	private static final int INITIAL_CARDS_LEFT = 100;
-	private static final int INITIAL_SCORE = 8;
+	public static final int TOTAL_PILE_COUNT = 8;
+	public static final int TOTAL_COLUMN_COUNT = 10;
+	public static final int INITIAL_CARDS_LEFT = 100;
+	public static final int INITIAL_SCORE = 8;
 	
-	private MultiDeck doubleDeck;
-	private Pile piles[];
-	private Column[] columns;
-	private Column wastePile;
-	private DeckView multiDeckView;
-	private PileView pileViews[];
-	private ColumnView[] columnViews;
-	private RowView wastePileRowView;
-	private IntegerView scoreView;
-	private IntegerView stockPileCountView;
-	private IntegerView wastePileCountView;
+	MultiDeck doubleDeck;
+	Pile piles[];
+	Column[] columns;
+	Column wastePile;
+	DeckView multiDeckView;
+	PileView pileViews[];
+	ColumnView[] columnViews;
+	RowView wastePileRowView;
+	IntegerView scoreView;
+	IntegerView stockPileCountView;
+	IntegerView wastePileCountView;
 
 	@Override
 	public String getName() {
