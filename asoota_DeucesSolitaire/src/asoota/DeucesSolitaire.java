@@ -9,8 +9,8 @@ import ks.common.games.Solitaire;
 import ks.common.games.SolitaireUndoAdapter;
 import ks.common.model.Card;
 import ks.common.model.Column;
-import ks.common.model.Deck;
 import ks.common.model.MultiDeck;
+import ks.common.model.MutableInteger;
 import ks.common.model.Pile;
 import ks.common.view.CardImages;
 import ks.common.view.ColumnView;
@@ -27,6 +27,8 @@ public class DeucesSolitaire extends Solitaire {
 	public static final int INITIAL_CARDS_LEFT = 86;
 	public static final int INITIAL_SCORE = 8;
 	
+	private MutableInteger wastePileNumLeft;
+	
 	MultiDeck doubleDeck;
 	Pile piles[];
 	Column[] columns;
@@ -39,6 +41,12 @@ public class DeucesSolitaire extends Solitaire {
 	IntegerView stockPileCountView;
 	IntegerView wastePileCountView;
 
+	public DeucesSolitaire() {
+		super(); // Let the super do its job
+		// Set up some variables
+		wastePileNumLeft = new MutableInteger(0);
+	}
+	
 	@Override
 	public String getName() {
 		return "DeucesSolitaire";
@@ -124,18 +132,18 @@ public class DeucesSolitaire extends Solitaire {
 		scoreView.setBounds(260 + (9 * cardImages.getWidth()), 20, 160, 60); // TODO: Fix the width and height as well
 		this.container.addWidget(scoreView); // Add this IntegerView to be shown to the user
 		
-		stockPileCountView = new IntegerView(getNumLeft()); // TODO: Fix the model it is getting its information from
+		stockPileCountView = new IntegerView(getNumLeft());
 		stockPileCountView.setBounds(60, 50 + (3 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
 		this.container.addWidget(stockPileCountView); // Add this IntegerView to be shown to the user as well
 		
-		wastePileCountView = new IntegerView(getNumLeft()); // TODO: Fix the model it is getting its information from
+		wastePileCountView = new IntegerView(getWastePileNumLeft());
 		wastePileCountView.setBounds(80 + cardImages.getWidth(), 50 + (3 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
 		this.container.addWidget(wastePileCountView); // Add this IntegerView to the container to be shown to the user as well
 	}
-	
+
 	private void initializeControllers() {
 		// Set up the controllers for the MultiDeckView first
-		multiDeckView.setMouseAdapter(new DeucesDeckController(DeucesSolitaire.this, doubleDeck, wastePile));
+		multiDeckView.setMouseAdapter(new DeucesDeckController(DeucesSolitaire.this, doubleDeck, wastePile, wastePileNumLeft)); // TODO: Check with TA if this controller can take this MutableInteger
 		multiDeckView.setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
 		multiDeckView.setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 		
@@ -146,14 +154,14 @@ public class DeucesSolitaire extends Solitaire {
 		
 		// Set up the Mouse Controller for the TableauPiles
 		for(int i = 0; i < TOTAL_COLUMN_COUNT; i++) {
-			columnViews[i].setMouseAdapter(new DeucesTableauPileController(DeucesSolitaire.this, columnViews[i]));
+			columnViews[i].setMouseAdapter(new DeucesTableauPileController(DeucesSolitaire.this, columnViews[i], wastePileNumLeft)); // TODO: Check with TA if this controller can take this MutableInteger
 			columnViews[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
 			columnViews[i].setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 		}
 		
 		// Set up the Mouse Controller for the FoundationPiles
 		for(int i = 0; i < TOTAL_PILE_COUNT; i++) {
-			pileViews[i].setMouseAdapter(new DeucesFoundationPileController(DeucesSolitaire.this, pileViews[i]));
+			pileViews[i].setMouseAdapter(new DeucesFoundationPileController(DeucesSolitaire.this, pileViews[i], wastePileNumLeft)); // TODO: Check with TA if this controller can take this MutableInteger
 			pileViews[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
 			pileViews[i].setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 		}
@@ -191,6 +199,10 @@ public class DeucesSolitaire extends Solitaire {
 			doubleDeck.add(cardsRolledOut.pop()); // Add the card to the MultiDeck
 		// Refresh the MultiDeckView
 		multiDeckView.redraw(); // Invalidate the MultiDeckView
+	}
+	
+	private MutableInteger getWastePileNumLeft() {
+		return wastePileNumLeft;
 	}
 	
 	@Override

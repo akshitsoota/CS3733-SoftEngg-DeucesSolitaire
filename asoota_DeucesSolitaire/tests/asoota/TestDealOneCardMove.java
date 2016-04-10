@@ -14,7 +14,8 @@ public class TestDealOneCardMove extends TestCase {
 		GameWindow gameWindow = Main.generateWindow(deucesGame, Deck.OrderBySuit); // Create the GameWindow as a testing environment
 		
 		Card topCardOfTheDeck = deucesGame.doubleDeck.peek(); // Take a look at the top card of the MultiDeck
-		DealOneCardMove theMove = new DealOneCardMove(deucesGame.doubleDeck, deucesGame.wastePile); // Create the move with the MultiDeck and WastePile
+		// TODO: DealOneCardMove theMove = new DealOneCardMove(deucesGame.doubleDeck, deucesGame.wastePile); // Create the move with the MultiDeck and WastePile
+		DealOneCardMove theMove = null;
 		
 		assertTrue(theMove.valid(deucesGame)); // By default, when the game starts up the move should be valid
 		// TODO: Ask why is this not working- assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT, deucesGame.doubleDeck.count()); // Initially, we should have all the cards in the MultiDeck

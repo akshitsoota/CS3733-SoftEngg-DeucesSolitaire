@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 
 import ks.common.model.Card;
 import ks.common.model.Column;
+import ks.common.model.MutableInteger;
 import ks.common.model.Pile;
 import ks.common.view.CardView;
 import ks.common.view.ColumnView;
@@ -18,12 +19,14 @@ import ks.common.view.RowView;
  */
 public class DeucesFoundationPileController extends MouseAdapter {
 
+	private MutableInteger wastePileNumLeft;
 	private DeucesSolitaire theGame;
 	private PileView pileView;
 
-	public DeucesFoundationPileController(DeucesSolitaire deucesSolitaire, PileView pileView) {
+	public DeucesFoundationPileController(DeucesSolitaire deucesSolitaire, PileView pileView, MutableInteger wastePileNumLeft) {
 		super(); // Let the super do its job
 		// Store the parameters sent to the constructor
+		this.wastePileNumLeft = wastePileNumLeft;
 		this.theGame = deucesSolitaire;
 		this.pileView = pileView;
 	}
@@ -48,7 +51,7 @@ public class DeucesFoundationPileController extends MouseAdapter {
 			CardView cardBeingDraggedView = (CardView)container.getActiveDraggingObject();
 			Card cardBeingDragged = (Card)cardBeingDraggedView.getModelElement();
 			// Create the move
-			FoundationFromWasteMove theMove = new FoundationFromWasteMove(wastePile, cardBeingDragged, foundationPile);
+			FoundationFromWasteMove theMove = new FoundationFromWasteMove(wastePile, cardBeingDragged, foundationPile, wastePileNumLeft);
 			// Try to see if the move is valid or not
 			if( theMove.valid(theGame) && theMove.doMove(theGame) ) {
 				// The move is valid and can be executed
@@ -63,6 +66,7 @@ public class DeucesFoundationPileController extends MouseAdapter {
 			// Get the container to repaint everything
 			container.repaint();
 		}
+		// TODO: Work on Column to Foundation Move
 	}
 
 }
