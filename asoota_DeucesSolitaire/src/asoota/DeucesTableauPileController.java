@@ -36,8 +36,8 @@ public class DeucesTableauPileController extends MouseAdapter {
 			return; // Ignore the call to this function
 		}
 		// Check if the user actually clicked the top card of the TableauPile
-		CardView topTableauCardView = sourceTableauView.getCardViewForBottomCard(e);
-		if( topTableauCardView == null ) {
+		ColumnView cardsBeingDragged = sourceTableauView.getColumnView(e);
+		if( cardsBeingDragged == null ) {
 			// The user didn't click the top of the card; Ignore the drag event and exit
 			container.releaseDraggingObject();
 			return; // Ignore the call to this function
@@ -45,7 +45,7 @@ public class DeucesTableauPileController extends MouseAdapter {
 		// Assert that the card that's being dragged is the same one as being shown being dragged on the container
 		assert(container.getActiveDraggingObject() == Container.getNothingBeingDragged());
 		// Notify the container that the card is being dragged and should be associated with this MouseEvent
-		container.setActiveDraggingObject(topTableauCardView, e);
+		container.setActiveDraggingObject(cardsBeingDragged, e);
 		// Tell the Container that who initiated the drag
 		container.setDragSource(sourceTableauView);
 
@@ -97,10 +97,10 @@ public class DeucesTableauPileController extends MouseAdapter {
 			ColumnView destTableau_ColumnView = sourceTableauView;
 			Column destTableau = (Column)destTableau_ColumnView.getModelElement();
 			// Resolve the card being dragged ke fields
-			CardView cardBeingDraggedView = (CardView)container.getActiveDraggingObject();
-			Card cardBeingDragged = (Card)cardBeingDraggedView.getModelElement();
+			ColumnView cardsKaColumnViewBeingDragged = (ColumnView)container.getActiveDraggingObject();
+			Column cardsBeingDragged = (Column)cardsKaColumnViewBeingDragged.getModelElement();
 			// Now, create the move
-			TableauFromTableauMove theMove = new TableauFromTableauMove(sourceTableau, cardBeingDragged, destTableau);
+			TableauFromTableauMove theMove = new TableauFromTableauMove(sourceTableau, cardsBeingDragged, destTableau);
 			// Try to see if the move is valid or not
 			if( theMove.valid(deucesGame) && theMove.doMove(deucesGame) ) {
 				// The move is valid and can be executed
@@ -108,7 +108,7 @@ public class DeucesTableauPileController extends MouseAdapter {
 				deucesGame.refreshWidgets(); // Invalidate all the Widgets on the UI
 			} else {
 				// The move is invalid and we've to send the card back from where it came
-				sourceTableau_ColumnView.returnWidget(cardBeingDraggedView); // Make sure the card being dragged goes back to the source TargetPile as the move was invalid
+				sourceTableau_ColumnView.returnWidget(cardsKaColumnViewBeingDragged); // Make sure the card being dragged goes back to the source TargetPile as the move was invalid
 			}
 			// Finally, release the dragging object to prevent things from getting weird
 			container.releaseDraggingObject();

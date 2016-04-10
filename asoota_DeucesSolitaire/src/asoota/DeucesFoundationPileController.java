@@ -8,7 +8,6 @@ import ks.common.model.Column;
 import ks.common.model.MutableInteger;
 import ks.common.model.Pile;
 import ks.common.view.CardView;
-import ks.common.view.ColumnView;
 import ks.common.view.Container;
 import ks.common.view.PileView;
 import ks.common.view.RowView;
@@ -66,7 +65,7 @@ public class DeucesFoundationPileController extends MouseAdapter {
 			// Get the container to repaint everything
 			container.repaint();
 		}
-		// TODO: Work on Column to Foundation Move
+		// TODO: Work on Column to Foundation Move; Check only one card is coming in here
 	}
 
 }

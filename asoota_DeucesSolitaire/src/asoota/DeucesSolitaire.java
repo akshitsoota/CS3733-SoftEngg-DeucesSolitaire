@@ -9,6 +9,7 @@ import ks.common.games.Solitaire;
 import ks.common.games.SolitaireUndoAdapter;
 import ks.common.model.Card;
 import ks.common.model.Column;
+import ks.common.model.Deck;
 import ks.common.model.MultiDeck;
 import ks.common.model.MutableInteger;
 import ks.common.model.Pile;
@@ -40,12 +41,6 @@ public class DeucesSolitaire extends Solitaire {
 	IntegerView scoreView;
 	IntegerView stockPileCountView;
 	IntegerView wastePileCountView;
-
-	public DeucesSolitaire() {
-		super(); // Let the super do its job
-		// Set up some variables
-		wastePileNumLeft = new MutableInteger(0);
-	}
 	
 	@Override
 	public String getName() {
@@ -71,6 +66,9 @@ public class DeucesSolitaire extends Solitaire {
 		doubleDeck = new MultiDeck("DeucesSolitaire-MultiDeck", 2);
 		doubleDeck.create(seed); // Initialize with the seed given
 		model.addElement(doubleDeck); // Add this element to the model
+		
+		// Initialize this MutableInteger for the number of cards in the WastePile
+		wastePileNumLeft = new MutableInteger(0);
 		
 		// Create all the Pile Models
 		piles = new Pile[TOTAL_PILE_COUNT];
@@ -212,7 +210,7 @@ public class DeucesSolitaire extends Solitaire {
 	
 	public static void main(String[] args) {
 		// Start up a new window with the DeucesSolitaire Variant with a random number as the seed
-		Main.generateWindow(new DeucesSolitaire(), new Random().nextInt());
+		Main.generateWindow(new DeucesSolitaire(), Deck.OrderByRank);// TODO: new Random().nextInt());
 	}
 
 }

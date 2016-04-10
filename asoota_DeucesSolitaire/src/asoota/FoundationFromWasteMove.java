@@ -54,12 +54,10 @@ public class FoundationFromWasteMove extends Move {
 
 	@Override
 	public boolean valid(Solitaire game) {
-		if( destFoundationPile.peek() == null )
-			return !wastePile.empty(); // As there is no top card in the destination Foundation Pile, a valid move is determined if the WastePile is empty or not
-		// If there is a top card in the Destination Foundation Pile, then check:
+		assert( destFoundationPile.peek() != null ); // There must exist atleast one card in the Foundation Pile
+		// If there is a top card in the Destination Foundation Pile (which should always be the case), then check:
 		return (destFoundationPile.peek().getRank() == (cardBeingDragged.getRank() - 1)) &&  // The destination foundation pile's top card is one rank lower than the card being dragged from the WastePile
-			   (destFoundationPile.peek().sameSuit(cardBeingDragged)) &&                     // The destination FoundationPile is the same rank as the card being dragged from the WastePile
-			   (!wastePile.empty());                                                         // The WastePile is not empty
+			   (destFoundationPile.peek().sameSuit(cardBeingDragged));                       // The destination FoundationPile is the same rank as the card being dragged from the WastePile
 	}
 
 }

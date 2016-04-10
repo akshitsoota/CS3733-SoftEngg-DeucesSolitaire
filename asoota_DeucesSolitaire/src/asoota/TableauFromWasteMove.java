@@ -48,11 +48,10 @@ public class TableauFromWasteMove extends Move {
 	@Override
 	public boolean valid(Solitaire game) {
 		if( destTableauPile.peek() == null )
-			return !wastePile.empty(); // If the destination Tableau Pile is empty, for a valid move a card must exist the WastePile
+			return true; // It should be a valid move to an empty Tableau Pile
 		// If there is a top card on the destination Tableau Pile, then:
 		return (destTableauPile.peek().getRank() == (cardBeingDragged.getRank() + 1)) &&   // The tableau piles grow downwards. So the card being added should be one rank lower to the top card on the Tableau Pile
-			   (destTableauPile.peek().getSuit() == cardBeingDragged.getSuit()) &&         // All the cards in the Tableau pile should be of the same suit. So this line will check that
-			   !wastePile.empty();                                                         // Finally for a move from the WastePile to a TableauPile, the WastePile must have some cards. This line will check for that
+			   (destTableauPile.peek().getSuit() == cardBeingDragged.getSuit());           // All the cards in the Tableau pile should be of the same suit. So this line will check that
 	}
 
 }
