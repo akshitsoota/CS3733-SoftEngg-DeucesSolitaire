@@ -49,6 +49,7 @@ public class DeucesSolitaire extends Solitaire {
 	public void initialize() {
 		initializeModel(getSeed());
 		initializeView();
+		initializeControllers();
 	}
 
 	private void initializeModel(int seed) {
@@ -108,7 +109,7 @@ public class DeucesSolitaire extends Solitaire {
 		
 		// Also, add a WastePile RowView
 		wastePileRowView = new RowView(wastePile);
-		wastePileRowView.setBounds(80 + cardImages.getWidth(), 40 + cardImages.getHeight() + (15 * cardImages.getOverlap()), cardImages.getWidth(), cardImages.getHeight());
+		wastePileRowView.setBounds(80 + cardImages.getWidth(), 40 + cardImages.getHeight() + (15 * cardImages.getOverlap()), cardImages.getWidth() + (60 * cardImages.getOverlap()), cardImages.getHeight());
 		this.container.addWidget(wastePileRowView); // Add this RowView to be shown to the user as well
 		
 		// Add IntegerViews now
@@ -123,6 +124,12 @@ public class DeucesSolitaire extends Solitaire {
 		wastePileCountView = new IntegerView(getNumLeft()); // TODO: Fix the model it is getting its information from
 		wastePileCountView.setBounds(80 + cardImages.getWidth(), 50 + (2 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
 		this.container.addWidget(wastePileCountView); // Add this IntegerView to the container to be shown to the user as well
+	}
+	
+	private void initializeControllers() {
+		// Set up the controllers for the MultiDeckView first
+		multiDeckView.setMouseAdapter(new DeucesDeckController(DeucesSolitaire.this, doubleDeck, wastePile));
+		
 	}
 	
 	@Override
