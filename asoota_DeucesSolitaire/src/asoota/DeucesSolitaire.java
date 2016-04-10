@@ -162,7 +162,15 @@ public class DeucesSolitaire extends Solitaire {
 				cardsRolledOut.add(recentlyRolledOutCard);
 			}
 		}
-		// Now that we've rolled out all cards, put them back as we got them
+		// Now that we've rolled out all cards, add 10 cards to the Tableau as well
+		int tableauPileToAddTo = 0;
+		while( tableauPileToAddTo < 10 ) {
+			columns[tableauPileToAddTo].add(cardsRolledOut.pop()); // Remove a card and add it to the TableauPile
+			columnViews[tableauPileToAddTo].redraw(); // Invalidate the ColumnView
+			// Increment the tableau pile count
+			tableauPileToAddTo++;
+		}
+		// Now that we've filled both the FoundationPiles and the TableauPiles, send all the other cards back
 		while( cardsRolledOut.size() != 0 ) // Keep unrolling till the Stack is empty
 			doubleDeck.add(cardsRolledOut.pop()); // Add the card to the MultiDeck
 		// Refresh the MultiDeckView
