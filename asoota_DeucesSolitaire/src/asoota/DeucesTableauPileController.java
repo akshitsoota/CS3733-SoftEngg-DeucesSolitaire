@@ -12,26 +12,21 @@ import ks.common.view.Container;
 import ks.common.view.PileView;
 import ks.common.view.RowView;
 
-/**
- * Controls all actions with a FoundationPile on the DeucesSolitaire FoundationPiles
- * @author asoota
- */
-public class DeucesFoundationPileController extends MouseAdapter {
+public class DeucesTableauPileController extends MouseAdapter {
 
-	private DeucesSolitaire theGame;
-	private PileView pileView;
+	private DeucesSolitaire deucesGame;
+	private ColumnView sourceTableauView;
 
-	public DeucesFoundationPileController(DeucesSolitaire deucesSolitaire, PileView pileView) {
-		super(); // Let the super do its job
-		// Store the parameters sent to the constructor
-		this.theGame = deucesSolitaire;
-		this.pileView = pileView;
+	public DeucesTableauPileController(DeucesSolitaire deucesSolitaire, ColumnView columnView) {
+		// Store the parameters passed to the controller
+		this.deucesGame = deucesSolitaire;
+		this.sourceTableauView = columnView;
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// Get the container to make UI updates
-		Container container = theGame.getContainer();
+		Container container = deucesGame.getContainer();
 		// Check if anything is being dragged around the container or not
 		assert(container.getActiveDraggingObject() != Container.getNothingBeingDragged());
 		// Get the source widget now
@@ -42,18 +37,18 @@ public class DeucesFoundationPileController extends MouseAdapter {
 			RowView wastePileView = (RowView)container.getDragSource();
 			Column wastePile = (Column)wastePileView.getModelElement();
 			// Resolve for the PileView fields
-			PileView foundationPileView = pileView;
-			Pile foundationPile = (Pile)foundationPileView.getModelElement();
+			ColumnView tableauPileView = sourceTableauView;
+			Column tableauPile = (Column)tableauPileView.getModelElement();
 			// Resolve the card being dragged ke fields
 			CardView cardBeingDraggedView = (CardView)container.getActiveDraggingObject();
 			Card cardBeingDragged = (Card)cardBeingDraggedView.getModelElement();
 			// Create the move
-			FoundationFromWasteMove theMove = new FoundationFromWasteMove(wastePile, cardBeingDragged, foundationPile);
+			TableauFromWasteMove theMove = new TableauFromWasteMove(wastePile, cardBeingDragged, tableauPile);
 			// Try to see if the move is valid or not
-			if( theMove.valid(theGame) && theMove.doMove(theGame) ) {
+			if( theMove.valid(deucesGame) && theMove.doMove(deucesGame) ) {
 				// The move is valid and can be executed
-				theGame.pushMove(theMove); // Make the move appear on the UI
-				theGame.refreshWidgets(); // Invalidate all the widgets on the GUI
+				deucesGame.pushMove(theMove); // Make the move appear on the UI
+				deucesGame.refreshWidgets(); // Invalidate all the widgets on the GUI
 			} else {
 				// The move is invalid and we've to send the card back from where it came
 				wastePileView.returnWidget(cardBeingDraggedView); // Make sure the card being dragged goes back to the WastePile as the move was invalid

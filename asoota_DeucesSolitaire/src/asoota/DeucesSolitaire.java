@@ -95,7 +95,7 @@ public class DeucesSolitaire extends Solitaire {
 		
 		// Now, start off by creating the multiDeck View
 		multiDeckView = new DeckView(doubleDeck); // Create the MultiDeck view on the model we created
-		multiDeckView.setBounds(60, 40 + cardImages.getHeight() + (15 * cardImages.getOverlap()), cardImages.getWidth(), cardImages.getHeight());
+		multiDeckView.setBounds(60, 40 + (2 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), cardImages.getHeight());
 		container.addWidget(multiDeckView); // Add this view to be shown to the user
 		
 		// Now, move onto by creating all the PileViews and adding them to the user container
@@ -110,13 +110,13 @@ public class DeucesSolitaire extends Solitaire {
 		columnViews = new ColumnView[TOTAL_COLUMN_COUNT];
 		for(int i = 0; i < TOTAL_COLUMN_COUNT; i++) {
 			columnViews[i] = new ColumnView(columns[i]); // Create a new ColumnView with the respective Column model
-			columnViews[i].setBounds(60 + (20 * i) + (i * cardImages.getWidth()), 40 + cardImages.getHeight(), cardImages.getWidth(), cardImages.getHeight());
+			columnViews[i].setBounds(60 + (20 * i) + (i * cardImages.getWidth()), 40 + cardImages.getHeight(), cardImages.getWidth(), cardImages.getHeight() + (13 * cardImages.getOverlap()));
 			this.container.addWidget(columnViews[i]); // Add this ColumnView to be shown to the user
 		}
 		
 		// Also, add a WastePile RowView
 		wastePileRowView = new RowView(wastePile);
-		wastePileRowView.setBounds(80 + cardImages.getWidth(), 40 + cardImages.getHeight() + (15 * cardImages.getOverlap()), cardImages.getWidth() + (60 * cardImages.getOverlap()), cardImages.getHeight());
+		wastePileRowView.setBounds(80 + cardImages.getWidth(), 40 + (2 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth() + (60 * cardImages.getOverlap()), cardImages.getHeight());
 		this.container.addWidget(wastePileRowView); // Add this RowView to be shown to the user as well
 		
 		// Add IntegerViews now
@@ -125,11 +125,11 @@ public class DeucesSolitaire extends Solitaire {
 		this.container.addWidget(scoreView); // Add this IntegerView to be shown to the user
 		
 		stockPileCountView = new IntegerView(getNumLeft()); // TODO: Fix the model it is getting its information from
-		stockPileCountView.setBounds(60, 50 + (2 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
+		stockPileCountView.setBounds(60, 50 + (3 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
 		this.container.addWidget(stockPileCountView); // Add this IntegerView to be shown to the user as well
 		
 		wastePileCountView = new IntegerView(getNumLeft()); // TODO: Fix the model it is getting its information from
-		wastePileCountView.setBounds(80 + cardImages.getWidth(), 50 + (2 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
+		wastePileCountView.setBounds(80 + cardImages.getWidth(), 50 + (3 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
 		this.container.addWidget(wastePileCountView); // Add this IntegerView to the container to be shown to the user as well
 	}
 	
@@ -146,7 +146,7 @@ public class DeucesSolitaire extends Solitaire {
 		
 		// Set up the Mouse Controller for the TableauPiles
 		for(int i = 0; i < TOTAL_COLUMN_COUNT; i++) {
-			// TODO: columnViews[i].setMouseAdapter(new DeucesTableauPileController(DeucesSolitaire.this, columnViews[i]));
+			columnViews[i].setMouseAdapter(new DeucesTableauPileController(DeucesSolitaire.this, columnViews[i]));
 			columnViews[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
 			columnViews[i].setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 		}
@@ -195,7 +195,7 @@ public class DeucesSolitaire extends Solitaire {
 	
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(1300, 750);
+		return new Dimension(1300, 840);
 	}
 	
 	public static void main(String[] args) {
