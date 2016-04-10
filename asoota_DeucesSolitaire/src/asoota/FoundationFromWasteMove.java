@@ -27,8 +27,11 @@ public class FoundationFromWasteMove extends Move {
 	public boolean doMove(Solitaire game) {
 		assert(valid(game) == true); // This function can only be called if the FoundationFromWasteMove is valid
 		// If the move is valid, perform the move
-		Card topCardFromTheWastePile = wastePile.get(); // Get the top card of the WastePile that is being moved
-		destFoundationPile.add(topCardFromTheWastePile); // Add the card to the top of the destination FoundatioPile that was dragged out of the WastePile
+		if( cardBeingDragged == null ) {
+			Card topCardFromTheWastePile = wastePile.get(); // Get the top card of the WastePile that is being moved
+			destFoundationPile.add(topCardFromTheWastePile); // Add the card to the top of the destination FoundatioPile that was dragged out of the WastePile
+		} else
+			destFoundationPile.add(cardBeingDragged); // Add the card that is being dragged right now
 		game.updateScore(1); // A card was moved to the FoundationPile and the score is now increased by one
 		// The move was successful so,
 		return true;
@@ -49,7 +52,7 @@ public class FoundationFromWasteMove extends Move {
 		if( destFoundationPile.peek() == null )
 			return !wastePile.empty(); // As there is no top card in the destination Foundation Pile, a valid move is determined if the WastePile is empty or not
 		// If there is a top card in the Destination Foundation Pile, then check:
-		return (destFoundationPile.peek().getRank() == (cardBeingDragged.getRank() + 1)) &&  // The destination foundation pile's top card is one rank higher than the card being dragged from the WastePile
+		return (destFoundationPile.peek().getRank() == (cardBeingDragged.getRank() - 1)) &&  // The destination foundation pile's top card is one rank lower than the card being dragged from the WastePile
 			   (destFoundationPile.peek().sameSuit(cardBeingDragged)) &&                     // The destination FoundationPile is the same rank as the card being dragged from the WastePile
 			   (!wastePile.empty());                                                         // The WastePile is not empty
 	}

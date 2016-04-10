@@ -8,6 +8,10 @@ import ks.common.view.CardView;
 import ks.common.view.Container;
 import ks.common.view.RowView;
 
+/**
+ * Controls all actions with a WastePile on the DeucesSolitaire WastePiles
+ * @author asoota
+ */
 public class DeucesWastePileController extends SolitaireReleasedAdapter {
 
 	private DeucesSolitaire deucesGame;

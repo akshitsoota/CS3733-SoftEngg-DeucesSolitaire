@@ -141,6 +141,22 @@ public class DeucesSolitaire extends Solitaire {
 		
 		// Set up Mouse Controller for the WastePileView
 		wastePileRowView.setMouseAdapter(new DeucesWastePileController(DeucesSolitaire.this, wastePileRowView));
+		wastePileRowView.setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
+		wastePileRowView.setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
+		
+		// Set up the Mouse Controller for the TableauPiles
+		for(int i = 0; i < TOTAL_COLUMN_COUNT; i++) {
+			// TODO: columnViews[i].setMouseAdapter(new DeucesTableauPileController(DeucesSolitaire.this, columnViews[i]));
+			columnViews[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
+			columnViews[i].setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
+		}
+		
+		// Set up the Mouse Controller for the FoundationPiles
+		for(int i = 0; i < TOTAL_PILE_COUNT; i++) {
+			pileViews[i].setMouseAdapter(new DeucesFoundationPileController(DeucesSolitaire.this, pileViews[i]));
+			pileViews[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
+			pileViews[i].setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
+		}
 	}
 	
 	private void rollOutDeck() {
