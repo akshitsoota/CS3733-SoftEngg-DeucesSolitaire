@@ -2,7 +2,9 @@ package asoota;
 
 import java.awt.Dimension;
 
+import ks.common.controller.SolitaireMouseMotionAdapter;
 import ks.common.games.Solitaire;
+import ks.common.games.SolitaireUndoAdapter;
 import ks.common.model.Column;
 import ks.common.model.Deck;
 import ks.common.model.MultiDeck;
@@ -129,7 +131,11 @@ public class DeucesSolitaire extends Solitaire {
 	private void initializeControllers() {
 		// Set up the controllers for the MultiDeckView first
 		multiDeckView.setMouseAdapter(new DeucesDeckController(DeucesSolitaire.this, doubleDeck, wastePile));
+		multiDeckView.setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
+		multiDeckView.setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 		
+		// Set up Mouse Controller for the WastePileView
+		wastePileRowView.setMouseAdapter(new DeucesWastePileController(DeucesSolitaire.this, wastePileRowView));
 	}
 	
 	@Override
