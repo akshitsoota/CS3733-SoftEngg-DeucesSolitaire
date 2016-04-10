@@ -1,10 +1,13 @@
 package asoota;
 
 import java.awt.Dimension;
+import java.util.Random;
+import java.util.Stack;
 
 import ks.common.controller.SolitaireMouseMotionAdapter;
 import ks.common.games.Solitaire;
 import ks.common.games.SolitaireUndoAdapter;
+import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Deck;
 import ks.common.model.MultiDeck;
@@ -21,7 +24,7 @@ public class DeucesSolitaire extends Solitaire {
 
 	public static final int TOTAL_PILE_COUNT = 8;
 	public static final int TOTAL_COLUMN_COUNT = 10;
-	public static final int INITIAL_CARDS_LEFT = 100;
+	public static final int INITIAL_CARDS_LEFT = 86;
 	public static final int INITIAL_SCORE = 8;
 	
 	MultiDeck doubleDeck;
@@ -52,6 +55,8 @@ public class DeucesSolitaire extends Solitaire {
 		initializeModel(getSeed());
 		initializeView();
 		initializeControllers();
+		// Roll out the deck as an initial move of the game
+		rollOutDeck();
 	}
 
 	private void initializeModel(int seed) {
@@ -138,14 +143,40 @@ public class DeucesSolitaire extends Solitaire {
 		wastePileRowView.setMouseAdapter(new DeucesWastePileController(DeucesSolitaire.this, wastePileRowView));
 	}
 	
+	private void rollOutDeck() {
+		// We unroll the entire deck and place all the Twos to the FoundationPiles
+		Stack<Card> cardsRolledOut = new Stack<Card>();
+		Card recentlyRolledOutCard = null;
+		int foundationPileToAddTo = 0;
+		// Iterate over all the cards now
+		while( (recentlyRolledOutCard = doubleDeck.get()) != null ) {
+			// Check if this is the card we're looking for
+			if( recentlyRolledOutCard.getRank() == Card.TWO ) {
+				// Don't add this to the Queue, add to the FoundationPile
+				piles[foundationPileToAddTo].add(recentlyRolledOutCard);
+				pileViews[foundationPileToAddTo].redraw(); // Invalidate the Foundation PileView
+				// Increment the foundationPileToAddTo index
+				foundationPileToAddTo++;
+			} else {
+				// Add the card to the stack
+				cardsRolledOut.add(recentlyRolledOutCard);
+			}
+		}
+		// Now that we've rolled out all cards, put them back as we got them
+		while( cardsRolledOut.size() != 0 ) // Keep unrolling till the Stack is empty
+			doubleDeck.add(cardsRolledOut.pop()); // Add the card to the MultiDeck
+		// Refresh the MultiDeckView
+		multiDeckView.redraw(); // Invalidate the MultiDeckView
+	}
+	
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(1300, 750);
 	}
 	
 	public static void main(String[] args) {
-		// Start up a new window with the DeucesSolitaire Variant
-		Main.generateWindow(new DeucesSolitaire(), Deck.OrderBySuit);
+		// Start up a new window with the DeucesSolitaire Variant with a random number as the seed
+		Main.generateWindow(new DeucesSolitaire(), new Random().nextInt());
 	}
 
 }
