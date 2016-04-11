@@ -64,7 +64,7 @@ public class DeucesTableauPileController extends MouseAdapter {
 		if( container.getDragSource() == null || container.getDragSource().getModelElement() == null || container.getDragSource().getModelElement().getName() == null )
 			return;
 		// Now, attempt to resolve the source widget now
-		if( container.getDragSource().getModelElement() != null && container.getDragSource().getModelElement().getName().equals("DeucesSolitaire-WastePile") ) { // TODO: Check if valid way of checking the model that is giving the card
+		if( container.getDragSource().getModelElement().getName().equals("DeucesSolitaire-WastePile") ) { // TODO: Check if valid way of checking the model that is giving the card
 			// We know the source of the drag is the DeucesSolitaire-WastePile; Resolve for the WastePile fields
 			RowView wastePileView = (RowView)container.getDragSource();
 			Column wastePile = (Column)wastePileView.getModelElement();
@@ -89,7 +89,7 @@ public class DeucesTableauPileController extends MouseAdapter {
 			container.releaseDraggingObject();
 			// Get the container to repaint everything
 			container.repaint();
-		} else if( container.getDragSource().getModelElement() != null && container.getDragSource().getModelElement().getName().startsWith("DeucesSolitaire-Column") ) {
+		} else if( container.getDragSource().getModelElement().getName().startsWith("DeucesSolitaire-Column") ) {
 			// We know the source of the drag is DeucesSolitaire-Pile{%d}; Resolve the source PileView fields
 			ColumnView sourceTableau_ColumnView = (ColumnView)container.getDragSource();
 			Column sourceTableau = (Column)sourceTableau_ColumnView.getModelElement();

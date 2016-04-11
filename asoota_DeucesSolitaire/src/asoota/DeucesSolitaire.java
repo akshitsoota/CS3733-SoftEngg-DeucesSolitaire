@@ -108,7 +108,7 @@ public class DeucesSolitaire extends Solitaire {
 		pileViews = new PileView[TOTAL_PILE_COUNT];
 		for(int i = 0; i < TOTAL_PILE_COUNT; i++) {
 			pileViews[i] = new PileView(piles[i]); // Create a new pile view with the respective Pile model
-			pileViews[i].setBounds(80 + (20 * i) + (i * cardImages.getWidth()), 20, cardImages.getWidth(), cardImages.getHeight());
+			pileViews[i].setBounds(123 + (20 * i) + (i * cardImages.getWidth()), 20, cardImages.getWidth(), cardImages.getHeight());
 			this.container.addWidget(pileViews[i]); // Add this PileView to be shown to the user
 		}
 		
@@ -116,7 +116,7 @@ public class DeucesSolitaire extends Solitaire {
 		columnViews = new ColumnView[TOTAL_COLUMN_COUNT];
 		for(int i = 0; i < TOTAL_COLUMN_COUNT; i++) {
 			columnViews[i] = new ColumnView(columns[i]); // Create a new ColumnView with the respective Column model
-			columnViews[i].setBounds(60 + (20 * i) + (i * cardImages.getWidth()), 40 + cardImages.getHeight(), cardImages.getWidth(), cardImages.getHeight() + (13 * cardImages.getOverlap()));
+			columnViews[i].setBounds(30 + (20 * i) + (i * cardImages.getWidth()), 40 + cardImages.getHeight(), cardImages.getWidth(), cardImages.getHeight() + (13 * cardImages.getOverlap()));
 			this.container.addWidget(columnViews[i]); // Add this ColumnView to be shown to the user
 		}
 		

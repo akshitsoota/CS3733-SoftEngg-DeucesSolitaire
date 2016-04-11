@@ -5,12 +5,15 @@ import java.awt.event.MouseEvent;
 
 import ks.common.model.Card;
 import ks.common.model.Column;
+import ks.common.model.Element;
 import ks.common.model.MutableInteger;
 import ks.common.model.Pile;
 import ks.common.view.CardView;
+import ks.common.view.ColumnView;
 import ks.common.view.Container;
 import ks.common.view.PileView;
 import ks.common.view.RowView;
+import ks.common.view.Widget;
 
 /**
  * Controls all actions with a FoundationPile on the DeucesSolitaire FoundationPiles
@@ -38,8 +41,11 @@ public class DeucesFoundationPileController extends MouseAdapter {
 		assert(container.getActiveDraggingObject() != Container.getNothingBeingDragged());
 		// Get the source widget now
 		assert(container.getDragSource() != null);
+		// Check for null pointers
+		if( container.getDragSource().getModelElement() == null || container.getDragSource().getModelElement().getName() == null )
+			return;
 		// Now, attempt to resolve the source widget now
-		if( container.getDragSource() != null && container.getDragSource().getModelElement().getName().equals("DeucesSolitaire-WastePile") ) {
+		if( container.getDragSource().getModelElement().getName().equals("DeucesSolitaire-WastePile") ) {
 			// We know the source of the drag is the DeucesSolitaire-WastePile; Resolve for the WastePile fields
 			RowView wastePileView = (RowView)container.getDragSource();
 			Column wastePile = (Column)wastePileView.getModelElement();
@@ -64,8 +70,33 @@ public class DeucesFoundationPileController extends MouseAdapter {
 			container.releaseDraggingObject();
 			// Get the container to repaint everything
 			container.repaint();
+		} else if( container.getDragSource().getModelElement().getName().startsWith("DeucesSolitaire-Column") ) {
+			// We know the source of the drag is DeucesSolitaire-Pile{%d}; Resolve the source ColumnView (TableauPile) fields
+			ColumnView sourceTableauPile = (ColumnView)container.getDragSource();
+			Column sourceTableau = (Column)sourceTableauPile.getModelElement();
+			// Resolve for the Card/Column being dragged
+			ColumnView cardsViewBeingDragged = (ColumnView)container.getActiveDraggingObject(); // Because we've extracted a Column from the Container, we do know this will be a Column but may container one or more cards
+			Column cardsBeingDragged = (Column)cardsViewBeingDragged.getModelElement();
+			// Resolve for the Destination FoundationPile fields
+			PileView destinationFoundationPile = pileView;
+			Pile theFoundationPile = (Pile)destinationFoundationPile.getModelElement();
+			// Create the move
+			FoundationFromTableauMove theMove = new FoundationFromTableauMove(sourceTableau, cardsBeingDragged, theFoundationPile);
+			// Try to see if the move is valid and if that is the case, perform the move
+			if( theMove.valid(theGame) && theMove.doMove(theGame) ) {
+				// We were able to execute the move on the board
+				theGame.pushMove(theMove); // Push the changes to the board
+				theGame.refreshWidgets(); // Invalidate all the widgets on the UI
+			} else {
+				// The move is not possible and hence the card/cards have to go back to the source
+				// As this function can take in a Widget, we can just send that in. We don't need to be worried if the Widget is a Card/Column of Cards
+				sourceTableauPile.returnWidget(cardsViewBeingDragged);
+			}
+			// Finally, release the dragging object to prevent things from getting weird
+			container.releaseDraggingObject();
+			// Get the container to repaint everything
+			container.repaint();
 		}
-		// TODO: Work on Column to Foundation Move; Check only one card is coming in here
 	}
 
 }
