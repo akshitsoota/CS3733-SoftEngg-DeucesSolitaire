@@ -42,6 +42,8 @@ public class DeucesSolitaire extends Solitaire {
 	IntegerView stockPileCountView;
 	IntegerView wastePileCountView;
 	
+	// TODO: In all the Moves to the Foundation, check if an Ace is being added over a King.
+	
 	@Override
 	public String getName() {
 		return "DeucesSolitaire";
@@ -210,7 +212,7 @@ public class DeucesSolitaire extends Solitaire {
 	
 	public static void main(String[] args) {
 		// Start up a new window with the DeucesSolitaire Variant with a random number as the seed
-		Main.generateWindow(new DeucesSolitaire(), Deck.OrderByRank);// TODO: new Random().nextInt());
+		Main.generateWindow(new DeucesSolitaire(), new Random().nextInt());
 	}
 
 }

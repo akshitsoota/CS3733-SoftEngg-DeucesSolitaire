@@ -53,7 +53,7 @@ public class FoundationFromTableauMove extends Move {
 		return (cardsBeingDragged.count() == 1) &&                                                    // TODO: Add comment here and check with TA if this is a valid way of checking if it is a single card or a column of cards that is being dragged
 			   (destFoundationPile.peek().getRank() == (cardsBeingDragged.peek().getRank() - 1)) &&   // We will only reach here if the Element cardBeingDragged is only one card due to Java Short-Circuiting. We now peek the top card of the column as that is the only card in the column.
 			                                                                                          // The Foundation Piles grow upwards. That means the card is being dragged should have a rank one higher than the card already sitting in the Foundation Pile
-			   (destFoundationPile.peek().getSuit() == (cardsBeingDragged.peek().getSuit()));          // All the cards in the foundation pile are of the same suit. This checks that the card that will be added is of the suit as the card that is already in the Foundation Pile.
+			   (destFoundationPile.peek().getSuit() == (cardsBeingDragged.peek().getSuit()));         // All the cards in the foundation pile are of the same suit. This checks that the card that will be added is of the suit as the card that is already in the Foundation Pile.
 	}
 
 }
