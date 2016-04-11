@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 
 import ks.common.model.Card;
 import ks.common.model.Column;
-import ks.common.model.Element;
 import ks.common.model.MutableInteger;
 import ks.common.model.Pile;
 import ks.common.view.CardView;
@@ -13,7 +12,6 @@ import ks.common.view.ColumnView;
 import ks.common.view.Container;
 import ks.common.view.PileView;
 import ks.common.view.RowView;
-import ks.common.view.Widget;
 
 /**
  * Controls all actions with a FoundationPile on the DeucesSolitaire FoundationPiles

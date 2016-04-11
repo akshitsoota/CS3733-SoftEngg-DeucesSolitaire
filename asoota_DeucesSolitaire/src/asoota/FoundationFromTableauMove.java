@@ -3,10 +3,8 @@ package asoota;
 import ks.common.games.Solitaire;
 import ks.common.model.Card;
 import ks.common.model.Column;
-import ks.common.model.Element;
 import ks.common.model.Move;
 import ks.common.model.Pile;
-import ks.common.view.Widget;
 
 /**
  * Move a card from the top of a column in a TableauPile to the top of a FoudatioPile.
