@@ -55,9 +55,13 @@ public class FoundationFromWasteMove extends Move {
 	@Override
 	public boolean valid(Solitaire game) {
 		assert( destFoundationPile.peek() != null ); // There must exist atleast one card in the Foundation Pile
-		// If there is a top card in the Destination Foundation Pile (which should always be the case), then check:
+		// If there is a top card in the Destination Foundation Pile (which should always be the case), then:
+		// Rank check- Here we check if the destination is King and then card being added to the Foundation is an ACE, then we only check for suit equality
+		if( cardBeingDragged.getRank() == Card.ACE && destFoundationPile.peek().getRank() == Card.KING )
+			return destFoundationPile.peek().getSuit() == cardBeingDragged.getSuit();
+		// Else, we compare the ranks and the suits
 		return (destFoundationPile.peek().getRank() == (cardBeingDragged.getRank() - 1)) &&  // The destination foundation pile's top card is one rank lower than the card being dragged from the WastePile
-			   (destFoundationPile.peek().sameSuit(cardBeingDragged));                       // The destination FoundationPile is the same rank as the card being dragged from the WastePile
+			   (destFoundationPile.peek().getSuit() == cardBeingDragged.getSuit());          // The destination FoundationPile is the same rank as the card being dragged from the WastePile
 	}
 
 }

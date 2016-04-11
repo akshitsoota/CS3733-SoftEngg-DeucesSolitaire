@@ -47,9 +47,15 @@ public class FoundationFromTableauMove extends Move {
 	@Override
 	public boolean valid(Solitaire game) {
 		assert( destFoundationPile.peek() != null ); // There should be atleast one card in the Foundation Pile
-		// If there is a top card in the Destination Foundation Pile (which should always be the case), then check:
-		return (cardsBeingDragged.count() == 1) &&                                                    // TODO: Add comment here and check with TA if this is a valid way of checking if it is a single card or a column of cards that is being dragged
-			   (destFoundationPile.peek().getRank() == (cardsBeingDragged.peek().getRank() - 1)) &&   // We will only reach here if the Element cardBeingDragged is only one card due to Java Short-Circuiting. We now peek the top card of the column as that is the only card in the column.
+		// If there is a top card in the Destination Foundation Pile (which should always be the case), then:
+		// TODO: Add comment here and check with TA if this is a valid way of checking if it is a single card or a column of cards that is being dragged
+		if( cardsBeingDragged.count() != 1 )
+			return false; // The player can only drag one card at a time to the Foundation and NOT a column of multiple cards
+		// Rank check- Here we check if the destination is King and then card being added to the Foundation is an ACE, then we only check for suit equality
+		if( cardsBeingDragged.peek().getRank() == Card.ACE && destFoundationPile.peek().getRank() == Card.KING )
+			return destFoundationPile.peek().getSuit() == cardsBeingDragged.peek().getSuit();
+		// Else, we compare the ranks and the suits
+		return (destFoundationPile.peek().getRank() == (cardsBeingDragged.peek().getRank() - 1)) &&   // We will only reach here if the Element cardBeingDragged is only one card due to Java Short-Circuiting. We now peek the top card of the column as that is the only card in the column.
 			                                                                                          // The Foundation Piles grow upwards. That means the card is being dragged should have a rank one higher than the card already sitting in the Foundation Pile
 			   (destFoundationPile.peek().getSuit() == (cardsBeingDragged.peek().getSuit()));         // All the cards in the foundation pile are of the same suit. This checks that the card that will be added is of the suit as the card that is already in the Foundation Pile.
 	}
