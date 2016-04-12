@@ -1,5 +1,8 @@
 package asoota;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import ks.common.games.Solitaire;
 import ks.common.model.Card;
 import ks.common.model.Column;
@@ -12,6 +15,7 @@ import ks.common.model.Pile;
  */
 public class FoundationFromTableauMove extends Move {
 
+	private int cardsAddedToDestinationPile; // TODO: Check if this is allowed
 	private Column sourceTableauPile;
 	private Column cardsBeingDragged;
 	private Pile destFoundationPile;
@@ -27,19 +31,29 @@ public class FoundationFromTableauMove extends Move {
 	public boolean doMove(Solitaire game) {
 		assert(valid(game) == true); // This function can only be called if the FoundationFromTableauMove is valid
 		// If the move is valid, perform the move
-		destFoundationPile.add(cardsBeingDragged.get()); // Add the card that is being dragged to the destination Foundation Pile
-		                                                 // Because it was proved as a valid move (ie: the column has only one card, I will extract the card from the column and give that to be added to the Foundation Pile)
-		game.updateScore(1); // As a card being dragged to the Foundation Pile adds to the score of the game, this line will do it
+		// STEP 1: Unroll all the cards and put in a Queue to maintain order
+		Queue<Card> unrolledCards = new LinkedList<Card>();
+		while( cardsBeingDragged.peek() != null ) // While we have a card to add
+			unrolledCards.add(cardsBeingDragged.get()); // Pull out the card from the column
+		// STEP 2: Update the score with the number of cards added to the Foundation Pile
+		game.updateScore(unrolledCards.size()); // As cards are being dragged to the Foundation Pile adds to the score of the game, this line will do it
+		cardsAddedToDestinationPile = unrolledCards.size(); // Also keep track of this for the sake of the undo
+		// STEP 3: Roll them into the destination Foundation Pile
+		while( unrolledCards.size() != 0 ) // While the Queue has cards
+			destFoundationPile.add(unrolledCards.remove()); // Roll the card from the column into the destination foundation pile
 		// The move was successful so,
 		return true;
 	}
 
 	@Override
 	public boolean undo(Solitaire game) {
-		// If we want to undo the move, we should pull out the top card of the Foundation Pile and add it back to the source Tableau Pile
-		Card cardToPullOut = destFoundationPile.get(); // Pull out the card from the Foundation Pile
-		sourceTableauPile.add(cardToPullOut); // This card should now be added to the Source Tableau Pile
-		game.updateScore(-1); // As a card is being removed from one of the Foundation Piles, the score is decremented by one
+		// If we want to undo the move, we should pull out the cards of the Foundation Pile and add them back to the source Tableau Pile
+		// STEP: Unroll the cards from the Foundation Pile into the source Tableau Pile
+		while( cardsAddedToDestinationPile > 0 ) {
+			cardsAddedToDestinationPile--; // We just pulled one card from the destination foundation pile
+			sourceTableauPile.add(destFoundationPile.get()); // Remove from the destination foundation pile and add it to the source tableau pile
+			game.updateScore(-1); // As a card is being removed, the game score has to be necessarily updated
+		}
 		// As the undo was successful, we will
 		return true;
 	}
@@ -48,16 +62,13 @@ public class FoundationFromTableauMove extends Move {
 	public boolean valid(Solitaire game) {
 		assert( destFoundationPile.peek() != null ); // There should be atleast one card in the Foundation Pile
 		// If there is a top card in the Destination Foundation Pile (which should always be the case), then:
-		// TODO: Add comment here and check with TA if this is a valid way of checking if it is a single card or a column of cards that is being dragged
-		if( cardsBeingDragged.count() != 1 )
-			return false; // The player can only drag one card at a time to the Foundation and NOT a column of multiple cards
-		// Rank check- Here we check if the destination is King and then card being added to the Foundation is an ACE, then we only check for suit equality
+		// Rank check- Here we check if the destination is King and then card being added to the Foundation is an ACE, then we only check for suit equality and only card should be added as only an Ace can be added (and that's about it)
 		if( cardsBeingDragged.peek().getRank() == Card.ACE && destFoundationPile.peek().getRank() == Card.KING )
-			return destFoundationPile.peek().getSuit() == cardsBeingDragged.peek().getSuit();
+			return (destFoundationPile.peek().getSuit() == cardsBeingDragged.peek().getSuit()) &&    // Suit check
+				   (cardsBeingDragged.count() == 1);                                                 // Only one card (Ace) should be dragged
 		// Else, we compare the ranks and the suits
-		return (destFoundationPile.peek().getRank() == (cardsBeingDragged.peek().getRank() - 1)) &&   // We will only reach here if the Element cardBeingDragged is only one card due to Java Short-Circuiting. We now peek the top card of the column as that is the only card in the column.
-			                                                                                          // The Foundation Piles grow upwards. That means the card is being dragged should have a rank one higher than the card already sitting in the Foundation Pile
-			   (destFoundationPile.peek().getSuit() == (cardsBeingDragged.peek().getSuit()));         // All the cards in the foundation pile are of the same suit. This checks that the card that will be added is of the suit as the card that is already in the Foundation Pile.
+		return (destFoundationPile.peek().getRank() == (cardsBeingDragged.peek().getRank() - 1)) &&   // The Foundation Piles grow upwards. That means the bottom card of a column of cards that is being dragged should have a rank one higher than the card already sitting in the Foundation Pile
+			   (destFoundationPile.peek().getSuit() == (cardsBeingDragged.peek().getSuit()));         // All the cards in the foundation pile are of the same suit. This checks that the bottom card of a column of cards that is being dragged is of the suit as the card that is already in the Foundation Pile.
 	}
 
 }
