@@ -4,7 +4,6 @@ import ks.common.games.Solitaire;
 import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Move;
-import ks.common.model.MutableInteger;
 
 /**
  * Move a card from the top of WastePile to a Tableau Pile.
@@ -15,14 +14,12 @@ public class TableauFromWasteMove extends Move {
 	private Column wastePile;
 	private Card cardBeingDragged;
 	private Column destTableauPile;
-	private MutableInteger wastePileNumLeft;
 	
-	public TableauFromWasteMove(Column fromWastePile, Card cardBeingDragged, Column toTableauPile, MutableInteger wastePileNumLeft) {
+	public TableauFromWasteMove(Column fromWastePile, Card cardBeingDragged, Column toTableauPile) {
 		// Save all the parameters for future use
 		this.wastePile = fromWastePile;
 		this.cardBeingDragged = cardBeingDragged;
 		this.destTableauPile = toTableauPile;
-		this.wastePileNumLeft = wastePileNumLeft;
 	}
 	
 	@Override
@@ -30,7 +27,7 @@ public class TableauFromWasteMove extends Move {
 		assert(valid(game) == true); // This function can only be called if the TableauFromWasteMove is valid
 		// If the move is valid, perform the move
 		destTableauPile.add(cardBeingDragged); // Add the card that is being dragged right now
-		wastePileNumLeft.increment(-1); // We have now removed a card to the WastePile and thus decrement its count
+		((DeucesSolitaire)game).setWastePileCardCount(-1); // We have now removed a card to the WastePile and thus decrement its count
 		// The move was successful so,
 		return true;
 	}
@@ -40,7 +37,7 @@ public class TableauFromWasteMove extends Move {
 		// We want to get the top card of the TableauPile and now add it back to the WastePile
 		Card topOfTheTableauPile = destTableauPile.get(); // Grab the top of the TableauPile
 		wastePile.add(topOfTheTableauPile); // Add the card from the top of the TableauPile to the WastePile now
-		wastePileNumLeft.increment(1); // We have now undone the move and thus have to increment the count
+		((DeucesSolitaire)game).setWastePileCardCount(1); // We have now undone the move and thus have to increment the count
 		// The move was successful, so:
 		return true;
 	}

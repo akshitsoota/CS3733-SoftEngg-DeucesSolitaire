@@ -4,7 +4,6 @@ import ks.common.games.Solitaire;
 import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Move;
-import ks.common.model.MutableInteger;
 import ks.common.model.Pile;
 
 /**
@@ -16,14 +15,12 @@ public class FoundationFromWasteMove extends Move {
 	private Column wastePile;
 	private Pile destFoundationPile;
 	private Card cardBeingDragged;
-	private MutableInteger wastePileNumLeft;
 	
-	public FoundationFromWasteMove(Column fromWastePile, Card cardBeingDragged, Pile toFoundationPile, MutableInteger wastePileNumLeft) {
+	public FoundationFromWasteMove(Column fromWastePile, Card cardBeingDragged, Pile toFoundationPile) {
 		// Save all the parameters for future use
 		this.wastePile = fromWastePile;
 		this.cardBeingDragged = cardBeingDragged;
 		this.destFoundationPile = toFoundationPile;
-		this.wastePileNumLeft = wastePileNumLeft;
 	}
 	
 	@Override
@@ -36,7 +33,7 @@ public class FoundationFromWasteMove extends Move {
 		} else
 			destFoundationPile.add(cardBeingDragged); // Add the card that is being dragged right now
 		game.updateScore(1); // A card was moved to the FoundationPile and the score is now increased by one
-		wastePileNumLeft.increment(-1); // We have now removed a card to the WastePile and thus decrement its count
+		((DeucesSolitaire)game).setWastePileCardCount(-1); // We have now removed a card to the WastePile and thus decrement its count
 		// The move was successful so,
 		return true;
 	}
@@ -47,7 +44,7 @@ public class FoundationFromWasteMove extends Move {
 		Card topOfTheFoundationPile = destFoundationPile.get(); // Grab the top of the FoundationPile
 		wastePile.add(topOfTheFoundationPile); // Add the card from the top of the FoundtionPile to the WastePile now
 		game.updateScore(-1); // A card was removed from the FoundationPile and added back to the WastePile and hence the score is decremented by one
-		wastePileNumLeft.increment(1); // We have now undone the move and thus have to increment the count
+		((DeucesSolitaire)game).setWastePileCardCount(1); // We have now undone the move and thus have to increment the count
 		// The move was successful, so:
 		return true;
 	}

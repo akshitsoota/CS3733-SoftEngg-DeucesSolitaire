@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 
 import ks.common.model.Card;
 import ks.common.model.Column;
-import ks.common.model.MutableInteger;
 import ks.common.view.CardView;
 import ks.common.view.ColumnView;
 import ks.common.view.Container;
@@ -15,13 +14,11 @@ public class DeucesTableauPileController extends MouseAdapter {
 
 	private DeucesSolitaire deucesGame;
 	private ColumnView sourceTableauView;
-	private MutableInteger wastePileNumLeft;
 
-	public DeucesTableauPileController(DeucesSolitaire deucesSolitaire, ColumnView columnView, MutableInteger wastePileNumLeft) {
+	public DeucesTableauPileController(DeucesSolitaire deucesSolitaire, ColumnView columnView) {
 		// Store the parameters passed to the controller
 		this.deucesGame = deucesSolitaire;
 		this.sourceTableauView = columnView;
-		this.wastePileNumLeft = wastePileNumLeft;
 	}
 	
 	@Override
@@ -75,7 +72,7 @@ public class DeucesTableauPileController extends MouseAdapter {
 			CardView cardBeingDraggedView = (CardView)container.getActiveDraggingObject();
 			Card cardBeingDragged = (Card)cardBeingDraggedView.getModelElement();
 			// Create the move
-			TableauFromWasteMove theMove = new TableauFromWasteMove(wastePile, cardBeingDragged, tableauPile, wastePileNumLeft);
+			TableauFromWasteMove theMove = new TableauFromWasteMove(wastePile, cardBeingDragged, tableauPile);
 			// Try to see if the move is valid or not
 			if( theMove.valid(deucesGame) && theMove.doMove(deucesGame) ) {
 				// The move is valid and can be executed

@@ -142,7 +142,7 @@ public class DeucesSolitaire extends Solitaire {
 
 	private void initializeControllers() {
 		// Set up the controllers for the MultiDeckView first
-		multiDeckView.setMouseAdapter(new DeucesDeckController(DeucesSolitaire.this, doubleDeck, wastePile, wastePileNumLeft)); // TODO: Check with TA if this controller can take this MutableInteger
+		multiDeckView.setMouseAdapter(new DeucesDeckController(DeucesSolitaire.this, doubleDeck, wastePile));
 		multiDeckView.setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
 		multiDeckView.setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 		
@@ -153,14 +153,14 @@ public class DeucesSolitaire extends Solitaire {
 		
 		// Set up the Mouse Controller for the TableauPiles
 		for(int i = 0; i < TOTAL_COLUMN_COUNT; i++) {
-			columnViews[i].setMouseAdapter(new DeucesTableauPileController(DeucesSolitaire.this, columnViews[i], wastePileNumLeft)); // TODO: Check with TA if this controller can take this MutableInteger
+			columnViews[i].setMouseAdapter(new DeucesTableauPileController(DeucesSolitaire.this, columnViews[i]));
 			columnViews[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
 			columnViews[i].setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 		}
 		
 		// Set up the Mouse Controller for the FoundationPiles
 		for(int i = 0; i < TOTAL_PILE_COUNT; i++) {
-			pileViews[i].setMouseAdapter(new DeucesFoundationPileController(DeucesSolitaire.this, pileViews[i], wastePileNumLeft)); // TODO: Check with TA if this controller can take this MutableInteger
+			pileViews[i].setMouseAdapter(new DeucesFoundationPileController(DeucesSolitaire.this, pileViews[i]));
 			pileViews[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
 			pileViews[i].setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 		}
@@ -202,6 +202,14 @@ public class DeucesSolitaire extends Solitaire {
 	
 	private MutableInteger getWastePileNumLeft() {
 		return wastePileNumLeft;
+	}
+	
+	public void setWastePileCardCount(int delta) {
+		this.wastePileNumLeft.setValue(this.wastePileNumLeft.getValue() + delta);
+	}
+	
+	public int getWastePileCardCount() {
+		return this.wastePileNumLeft.getValue();
 	}
 	
 	@Override

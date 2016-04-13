@@ -5,7 +5,6 @@ import junit.framework.TestCase;
 import ks.client.gamefactory.GameWindow;
 import ks.common.model.Card;
 import ks.common.model.Deck;
-import ks.common.model.MutableInteger;
 import ks.launcher.Main;
 
 public class TestDealOneCardMove extends TestCase {
@@ -14,14 +13,13 @@ public class TestDealOneCardMove extends TestCase {
 	public void testSimpleMove() {
 		DeucesSolitaire deucesGame = new DeucesSolitaire(); // Instantiate a DeucesSolitaire game
 		GameWindow gameWindow = Main.generateWindow(deucesGame, Deck.OrderBySuit); // Create the GameWindow as a testing environment
-		MutableInteger wastePileCountView = new MutableInteger(0); // By default, the number of cards in the WastePile equals zero
 		
 		Card topCardOfTheDeck = deucesGame.doubleDeck.peek(); // Take a look at the top card of the MultiDeck
-		DealOneCardMove theMove = new DealOneCardMove(deucesGame.doubleDeck, deucesGame.wastePile, wastePileCountView); // Create the move with the MultiDeck and WastePile
+		DealOneCardMove theMove = new DealOneCardMove(deucesGame.doubleDeck, deucesGame.wastePile); // Create the move with the MultiDeck and WastePile
 		
 		assertTrue(theMove.valid(deucesGame)); // By default, when the game starts up the move should be valid
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT, deucesGame.doubleDeck.count()); // Initially, we should have all the cards in the MultiDeck
-		assertEquals(0, wastePileCountView.getValue()); // Initially, the number of cards in the WastePile equal to zero
+		assertEquals(0, deucesGame.getWastePileCardCount()); // Initially, the number of cards in the WastePile equal to zero
 		
 		// Now perform the move and then look at the top card of the WastePile
 		theMove.doMove(deucesGame); // Perform the move
@@ -30,7 +28,7 @@ public class TestDealOneCardMove extends TestCase {
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT - 1, deucesGame.doubleDeck.count()); // After performing the move, we should now have one less card in the MultiDeck
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT - 1, deucesGame.getNumLeft().getValue()); // After performing the move, the number of cards left on the board should also be updated
 		assertEquals(1, deucesGame.wastePile.count()); // After the move, we now have one card in the WastePile
-		assertEquals(1, wastePileCountView.getValue()); // After the move, the number of the cards in the WastePile should be one
+		assertEquals(1, deucesGame.getWastePileCardCount()); // After the move, the number of the cards in the WastePile should be one
 		
 		// Let us attempt to undo the move now
 		theMove.undo(deucesGame);
@@ -39,16 +37,15 @@ public class TestDealOneCardMove extends TestCase {
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT, deucesGame.doubleDeck.count()); // After undoing the move, we should be back to square one in terms of the count
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT, deucesGame.getNumLeft().getValue()); // After undoing the move, we should be back to square one
 		assertEquals(0, deucesGame.wastePile.count()); // After undoing the move, as default, we should have no cards in the WastePile
-		assertEquals(0, wastePileCountView.getValue()); // After undoing the previous move, the number of cards on the WastePile are back to zero
+		assertEquals(0, deucesGame.getWastePileCardCount()); // After undoing the previous move, the number of cards on the WastePile are back to zero
 	}
 	
 	@SuppressWarnings("unused")
 	public void testMultipleDeals() {
 		DeucesSolitaire deucesGame = new DeucesSolitaire(); // Instantiate a DeucesSolitaire game
 		GameWindow gameWindow = Main.generateWindow(deucesGame, Deck.OrderBySuit); // Create the GameWindow as a testing environment
-		MutableInteger wastePileCountView = new MutableInteger(0); // By default, the number of cards in the WastePile equals zero
 		
-		DealOneCardMove theMove = new DealOneCardMove(deucesGame.doubleDeck, deucesGame.wastePile, wastePileCountView); // Create the move with the MultiDeck and WastePile
+		DealOneCardMove theMove = new DealOneCardMove(deucesGame.doubleDeck, deucesGame.wastePile); // Create the move with the MultiDeck and WastePile
 		
 		assertTrue(theMove.valid(deucesGame)); // By default, the move to deal a card from the Deck to the WastePile should be valid
 		
@@ -60,7 +57,7 @@ public class TestDealOneCardMove extends TestCase {
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT - 3, deucesGame.doubleDeck.count()); // After performing the moves, we should now have three less cards in the MultiDeck
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT - 3, deucesGame.getNumLeft().getValue()); // After performing the moves, the number of cards left on the board should also be updated
 		assertEquals(3, deucesGame.wastePile.count()); // After the moves, we now have three card in the WastePile
-		assertEquals(3, wastePileCountView.getValue()); // After the moves, the number of the cards in the WastePile should be three
+		assertEquals(3, deucesGame.getWastePileCardCount()); // After the moves, the number of the cards in the WastePile should be three
 		
 		// Let us attempt to undo one move now
 		theMove.undo(deucesGame);
@@ -68,7 +65,7 @@ public class TestDealOneCardMove extends TestCase {
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT - 2, deucesGame.doubleDeck.count()); // After undoing the move, we should still have two less cards in the MultiDeck
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT - 2, deucesGame.getNumLeft().getValue()); // After undoing the move, we should still have two less cards in the MultiDeck
 		assertEquals(2, deucesGame.wastePile.count()); // After undoing the move, we should have two cards in the WastePile
-		assertEquals(2, wastePileCountView.getValue()); // After undoing the previous move, the number of cards on the WastePile should be two
+		assertEquals(2, deucesGame.getWastePileCardCount()); // After undoing the previous move, the number of cards on the WastePile should be two
 		
 		// Now perform two such moves and then look at the top card of the WastePile
 		theMove.doMove(deucesGame); // Perform the moves
@@ -77,7 +74,7 @@ public class TestDealOneCardMove extends TestCase {
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT - 4, deucesGame.doubleDeck.count()); // After performing the moves, we should now have four less cards in the MultiDeck
 		assertEquals(DeucesSolitaire.INITIAL_CARDS_LEFT - 4, deucesGame.getNumLeft().getValue()); // After performing the moves, the number of cards left on the board should also be updated
 		assertEquals(4, deucesGame.wastePile.count()); // After the moves, we now have four card in the WastePile
-		assertEquals(4, wastePileCountView.getValue()); // After the moves, the number of the cards in the WastePile should be four
+		assertEquals(4, deucesGame.getWastePileCardCount()); // After the moves, the number of the cards in the WastePile should be four
 	}
 	
 }
