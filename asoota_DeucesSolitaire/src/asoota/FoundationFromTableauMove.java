@@ -62,7 +62,10 @@ public class FoundationFromTableauMove extends Move {
 	public boolean valid(Solitaire game) {
 		assert( destFoundationPile.peek() != null ); // There should be atleast one card in the Foundation Pile
 		// If there is a top card in the Destination Foundation Pile (which should always be the case), then:
-		// Rank check- Here we check if the destination is King and then card being added to the Foundation is an ACE, then we only check for suit equality and only card should be added as only an Ace can be added (and that's about it)
+		// Rank check 1- We shouldn't be able to add a card over Ace
+		if( destFoundationPile.peek().getRank() == Card.ACE )
+			return false; // You can never place a card over a Foundation Pile that has a facing Ace up
+		// Rank check 2- Here we check if the destination is King and then card being added to the Foundation is an ACE, then we only check for suit equality and only card should be added as only an Ace can be added (and that's about it)
 		if( cardsBeingDragged.peek().getRank() == Card.ACE && destFoundationPile.peek().getRank() == Card.KING )
 			return (destFoundationPile.peek().getSuit() == cardsBeingDragged.peek().getSuit()) &&    // Suit check
 				   (cardsBeingDragged.count() == 1);                                                 // Only one card (Ace) should be dragged
