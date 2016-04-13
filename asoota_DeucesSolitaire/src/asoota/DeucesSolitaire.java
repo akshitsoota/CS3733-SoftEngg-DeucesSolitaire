@@ -50,8 +50,16 @@ public class DeucesSolitaire extends Solitaire {
 
 	@Override
 	public boolean hasWon() {
-		// TODO: This has to be fixed, for now we will say false so that the game keeps going
-		return false;
+		// Check for two things
+		// Check 1- Score is maximum
+		if( getScore().getValue() != 104 )
+			return false; // The user has obviously not won
+		// Check 2- Cards on each of the Foundation Piles
+		for(int i = 0; i < TOTAL_PILE_COUNT; i++)
+			if( !piles[i].peek().isAce() )
+				return false; // The user should have all Aces on the Foundation Piles
+		// Else, the user has won
+		return true;
 	}
 
 	@Override
