@@ -59,10 +59,14 @@ public class TableauFromTableauMove extends Move {
 		// Roll them all back in
 		while( queueOfCardsBeingDragged.size() != 0 )
 			cardsBeingDragged.add(queueOfCardsBeingDragged.pop());
-		// Check the bottom-most card
-		if( destTableauPile.peek().getRank() != (lastCardExtracted.getRank() + 1) )
+		// Check the bottom-most card. For this we need multiple checks
+		// Rank Check 1- If the destination tableau pile is an Ace, the bottom-most card of the column being dragged has to be a king
+		if( destTableauPile.peek().isAce() && (lastCardExtracted.getRank() != Card.KING) )
+			return false; // So, if the destination tableau pile has the top card as an Ace, the card that has to touch it has to be a king
+		// Rank Check 2- If the destination tableau pile is NOT an Ace, check that the card that is being added will cause the Tableau pile to grow downward
+		if( (!destTableauPile.peek().isAce()) && (destTableauPile.peek().getRank() != (lastCardExtracted.getRank() + 1)) )
 			return false; // As the Tableau piles grow downwards, the bottom card of the column of cards that is being dragged should be a rank lower than the top card of the Tableau pile its going to
-		// Now return if the suit is the same
+		// Now return if the suit is the same as we've done both Rank Checks
 		return (destTableauPile.peek().getSuit() == (cardsBeingDragged.peek().getSuit())); // All cards in the same Tableau pile should have the same suit. This line checks for that                               
 	}
 

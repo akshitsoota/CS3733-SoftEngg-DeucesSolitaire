@@ -46,9 +46,14 @@ public class TableauFromWasteMove extends Move {
 	public boolean valid(Solitaire game) {
 		if( destTableauPile.peek() == null )
 			return true; // It should be a valid move to an empty Tableau Pile
-		// If there is a top card on the destination Tableau Pile, then:
-		return (destTableauPile.peek().getRank() == (cardBeingDragged.getRank() + 1)) &&   // The tableau piles grow downwards. So the card being added should be one rank lower to the top card on the Tableau Pile
-			   (destTableauPile.peek().getSuit() == cardBeingDragged.getSuit());           // All the cards in the Tableau pile should be of the same suit. So this line will check that
+		// Rank Check 1- If the destination tableau pile has an Ace, the only card that can be added is a King
+		if( destTableauPile.peek().isAce() && ( cardBeingDragged.getRank() != Card.KING ) )
+			return false; // The card that is being dragged is not a King and cannot sit below the Ace
+		// Rank Check 2- If tableau pile doesn't have an Ace at the top and as they grow downwards we should run a rank check
+		if( !destTableauPile.peek().isAce() && (destTableauPile.peek().getRank() != (cardBeingDragged.getRank() + 1)) )
+			return false; // The tableau piles grow downwards. So the card being added should be one rank lower to the top card on the Tableau Pile
+		// Finally, if there is a top card on the destination Tableau Pile, then:
+		return (destTableauPile.peek().getSuit() == cardBeingDragged.getSuit()); // All the cards in the Tableau pile should be of the same suit. So this line will check that
 	}
 
 }

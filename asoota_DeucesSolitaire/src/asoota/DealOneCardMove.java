@@ -38,7 +38,6 @@ public class DealOneCardMove extends Move {
 		multiDeck.add(topWastePileCard); // And now add it to the deck
 		game.updateNumberCardsLeft(1); // Because the move was undone, the number of cards left in the Deck has been increased by one
 		((DeucesSolitaire)game).setWastePileCardCount(-1); // We have undone the move and thus have to decrement the count
-		// TODO: Work on decrementing the WastePileCard Count
 		return true; // We were able to do the move, so return true
 	}
 

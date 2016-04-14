@@ -136,7 +136,7 @@ public class DeucesSolitaire extends Solitaire {
 		
 		// Add IntegerViews now
 		scoreView = new IntegerView(getScore()); // This will show the score to the user
-		scoreView.setBounds(260 + (9 * cardImages.getWidth()), 20, 160, 60); // TODO: Fix the width and height as well
+		scoreView.setBounds(260 + (9 * cardImages.getWidth()), 20, 160, 60);
 		this.container.addWidget(scoreView); // Add this IntegerView to be shown to the user
 		
 		stockPileCountView = new IntegerView(getNumLeft());
