@@ -34,6 +34,9 @@ public class TableauFromWasteMove extends Move {
 
 	@Override
 	public boolean undo(Solitaire game) {
+		// Validate the undo move
+		if(destTableauPile.count() == 0)
+			return false; // You cannot undo a move from the Tableau to the Waste if the Tableau is empty
 		// We want to get the top card of the TableauPile and now add it back to the WastePile
 		Card topOfTheTableauPile = destTableauPile.get(); // Grab the top of the TableauPile
 		wastePile.add(topOfTheTableauPile); // Add the card from the top of the TableauPile to the WastePile now

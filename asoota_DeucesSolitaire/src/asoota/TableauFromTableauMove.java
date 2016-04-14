@@ -37,6 +37,9 @@ public class TableauFromTableauMove extends Move {
 
 	@Override
 	public boolean undo(Solitaire game) {
+		// Validate the move
+		if( destTableauPile.count() == 0 )
+			return false; // You cannot undo if the destination Tableau pile is empty
 		// We want to get the top card of the destination TableauPile and add it back to the source TableauPile
 		Card topCardOfTheDestTableauPile = destTableauPile.get(); // Grab the top of the destination TableauPile
 		sourceTableauPile.add(topCardOfTheDestTableauPile); // Add the card from the top of the TableauPile to the source TableauPile now

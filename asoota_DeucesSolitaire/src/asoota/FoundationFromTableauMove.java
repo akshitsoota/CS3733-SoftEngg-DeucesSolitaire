@@ -47,6 +47,9 @@ public class FoundationFromTableauMove extends Move {
 
 	@Override
 	public boolean undo(Solitaire game) {
+		// Validate the undo move
+		if( destFoundationPile.peek().getRank() == Card.TWO )
+			return false; // You shouldn't be able to remove the base card from the Foundation Pile
 		// If we want to undo the move, we should pull out the cards of the Foundation Pile and add them back to the source Tableau Pile
 		// STEP: Unroll the cards from the Foundation Pile into the source Tableau Pile
 		while( cardsAddedToDestinationPile > 0 ) {

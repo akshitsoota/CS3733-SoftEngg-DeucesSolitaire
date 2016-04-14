@@ -40,6 +40,9 @@ public class FoundationFromWasteMove extends Move {
 
 	@Override
 	public boolean undo(Solitaire game) {
+		// Validate the undo move
+		if( destFoundationPile.peek().getRank() == Card.TWO )
+			return false; // You shouldn't be able to remove the base card from the Foundation Pile
 		// We want to get the top card of the FoundationPile and now add it back to the WastePile
 		Card topOfTheFoundationPile = destFoundationPile.get(); // Grab the top of the FoundationPile
 		wastePile.add(topOfTheFoundationPile); // Add the card from the top of the FoundtionPile to the WastePile now

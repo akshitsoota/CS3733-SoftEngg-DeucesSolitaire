@@ -33,6 +33,10 @@ public class DealOneCardMove extends Move {
 
 	@Override
 	public boolean undo(Solitaire game) {
+		// Validate the undo move
+		if( wastePile.count() == 0 )
+			return false; // There needs to be atleast one card in the Waste Pile to remove a card from the waste pile and add back to the MultiDeck
+		
 		// We want to get the top card of the WastePile and now add it to the Deck
 		Card topWastePileCard = wastePile.get(); // Get the card
 		multiDeck.add(topWastePileCard); // And now add it to the deck
