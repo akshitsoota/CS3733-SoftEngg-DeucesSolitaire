@@ -9,6 +9,7 @@ import ks.common.model.Move;
 
 public class TableauFromTableauMove extends Move {
 
+	private int cardsAddedToDestinationTableauPile; // TODO: Check if this is allowed
 	private Column sourceTableauPile;
 	private Column cardsBeingDragged;
 	private Column destTableauPile;
@@ -28,7 +29,9 @@ public class TableauFromTableauMove extends Move {
 		Stack<Card> cards = new Stack<Card>();
 		while( !cardsBeingDragged.empty() )
 			cards.add(cardsBeingDragged.get());
-		// STEP 2: Roll them out into the destination tableau pile
+		// STEP 2: Keep track of the number of cards that are dragged
+		cardsAddedToDestinationTableauPile = cards.size();
+		// STEP 3: Roll them out into the destination tableau pile
 		while( cards.size() != 0 )
 			destTableauPile.add(cards.pop());
 		// The move was successful so,
@@ -40,10 +43,11 @@ public class TableauFromTableauMove extends Move {
 		// Validate the move
 		if( destTableauPile.count() == 0 )
 			return false; // You cannot undo if the destination Tableau pile is empty
-		// We want to get the top card of the destination TableauPile and add it back to the source TableauPile
-		Card topCardOfTheDestTableauPile = destTableauPile.get(); // Grab the top of the destination TableauPile
-		sourceTableauPile.add(topCardOfTheDestTableauPile); // Add the card from the top of the TableauPile to the source TableauPile now
-		// TODO: Work on unrolling and rolling in the undo move
+		// STEP: Unroll the cards from the Foundation Pile into the source Tableau Pile
+		while( cardsAddedToDestinationTableauPile > 0 ) {
+			cardsAddedToDestinationTableauPile--; // We just pulled one card from the destination foundation pile
+			sourceTableauPile.add(destTableauPile.get()); // Remove from the destination foundation pile and add it to the source tableau pile
+		}
 		// The move was successful, so:
 		return true;
 	}
