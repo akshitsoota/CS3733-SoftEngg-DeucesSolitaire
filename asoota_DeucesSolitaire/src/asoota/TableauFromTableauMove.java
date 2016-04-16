@@ -43,11 +43,15 @@ public class TableauFromTableauMove extends Move {
 		// Validate the move
 		if( destTableauPile.count() == 0 )
 			return false; // You cannot undo if the destination Tableau pile is empty
-		// STEP: Unroll the cards from the Foundation Pile into the source Tableau Pile
+		// STEP 1: Unroll the cards from the Foundation Pile into a Stack
+		Stack<Card> cardsUnrolled = new Stack<Card>(); 
 		while( cardsAddedToDestinationTableauPile > 0 ) {
 			cardsAddedToDestinationTableauPile--; // We just pulled one card from the destination foundation pile
-			sourceTableauPile.add(destTableauPile.get()); // Remove from the destination foundation pile and add it to the source tableau pile
+			cardsUnrolled.add(destTableauPile.get()); // Remove from the destination foundation pile and add it to the stack
 		}
+		// STEP 2: Now, roll them out to the Source TableauPile
+		while( !cardsUnrolled.isEmpty() )
+			sourceTableauPile.add(cardsUnrolled.pop()); // Roll them out from the Stack and add it to the Source TableauPile
 		// The move was successful, so:
 		return true;
 	}
