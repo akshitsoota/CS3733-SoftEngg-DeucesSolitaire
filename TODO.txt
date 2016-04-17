@@ -1,4 +1,0 @@
-Tableau King over an Ace
-Column of Multiple Cards from the Tableau Pile to a Foundation Pile
-Test case to check King over Ace in Tableau
-Test case to check Ace over King in Foundation

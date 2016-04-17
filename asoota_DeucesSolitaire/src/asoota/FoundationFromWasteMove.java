@@ -27,11 +27,7 @@ public class FoundationFromWasteMove extends Move {
 	public boolean doMove(Solitaire game) {
 		assert(valid(game) == true); // This function can only be called if the FoundationFromWasteMove is valid
 		// If the move is valid, perform the move
-		if( cardBeingDragged == null ) {
-			Card topCardFromTheWastePile = wastePile.get(); // Get the top card of the WastePile that is being moved
-			destFoundationPile.add(topCardFromTheWastePile); // Add the card to the top of the destination FoundatioPile that was dragged out of the WastePile
-		} else
-			destFoundationPile.add(cardBeingDragged); // Add the card that is being dragged right now
+		destFoundationPile.add(cardBeingDragged); // Add the card that is being dragged right now
 		game.updateScore(1); // A card was moved to the FoundationPile and the score is now increased by one
 		((DeucesSolitaire)game).setWastePileCardCount(-1); // We have now removed a card to the WastePile and thus decrement its count
 		// The move was successful so,
