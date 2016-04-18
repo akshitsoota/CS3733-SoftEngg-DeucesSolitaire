@@ -41,8 +41,6 @@ public class DeucesSolitaire extends Solitaire {
 	IntegerView stockPileCountView;
 	IntegerView wastePileCountView;
 	
-	// TODO: In all the Moves to the Foundation, check if an Ace is being added over a King.
-	
 	@Override
 	public String getName() {
 		return "DeucesSolitaire";
@@ -140,11 +138,11 @@ public class DeucesSolitaire extends Solitaire {
 		this.container.addWidget(scoreView); // Add this IntegerView to be shown to the user
 		
 		stockPileCountView = new IntegerView(getNumLeft());
-		stockPileCountView.setBounds(60, 50 + (3 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
+		stockPileCountView.setBounds(60, 50 + (3 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60);
 		this.container.addWidget(stockPileCountView); // Add this IntegerView to be shown to the user as well
 		
 		wastePileCountView = new IntegerView(getWastePileNumLeft());
-		wastePileCountView.setBounds(80 + cardImages.getWidth(), 50 + (3 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60); // TODO: Fix the width and height as well
+		wastePileCountView.setBounds(80 + cardImages.getWidth(), 50 + (3 * cardImages.getHeight()) + (15 * cardImages.getOverlap()), cardImages.getWidth(), 60);
 		this.container.addWidget(wastePileCountView); // Add this IntegerView to the container to be shown to the user as well
 	}
 
