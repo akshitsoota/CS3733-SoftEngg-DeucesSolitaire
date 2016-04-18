@@ -2,9 +2,6 @@ package asoota;
 
 import java.awt.event.MouseEvent;
 
-import com.sun.webkit.ThemeClient;
-import com.sun.xml.internal.ws.client.SenderException;
-
 import ks.client.gamefactory.GameWindow;
 import ks.common.model.Deck;
 import ks.launcher.Main;
