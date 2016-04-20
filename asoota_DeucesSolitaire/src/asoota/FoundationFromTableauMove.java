@@ -29,7 +29,8 @@ public class FoundationFromTableauMove extends Move {
 	
 	@Override
 	public boolean doMove(Solitaire game) {
-		assert(valid(game) == true); // This function can only be called if the FoundationFromTableauMove is valid
+		if( valid(game) == false )
+			return false; // This function can only be called if the FoundationFromTableauMove is valid
 		// If the move is valid, perform the move
 		// STEP 1: Unroll all the cards and put in a Queue to maintain order
 		Queue<Card> unrolledCards = new LinkedList<Card>();

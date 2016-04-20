@@ -25,7 +25,8 @@ public class FoundationFromWasteMove extends Move {
 	
 	@Override
 	public boolean doMove(Solitaire game) {
-		assert(valid(game) == true); // This function can only be called if the FoundationFromWasteMove is valid
+		if( valid(game) == false )
+			return false; // This function can only be called if the FoundationFromWasteMove is valid
 		// If the move is valid, perform the move
 		destFoundationPile.add(cardBeingDragged); // Add the card that is being dragged right now
 		game.updateScore(1); // A card was moved to the FoundationPile and the score is now increased by one

@@ -21,7 +21,8 @@ public class DealOneCardMove extends Move {
 
 	@Override
 	public boolean doMove(Solitaire game) {
-		assert(valid(game) == true); // This function can only be called if the DealOneCardMove is valid
+		if( valid(game) == false )
+			return false; // This function can only be called if the DealOneCardMove is valid
 		// If the move is valid, perform the move
 		Card deckCard = multiDeck.get(); // Get the top card of the MultiDeck
 		wastePile.add(deckCard); // Add this card to the WastePile now

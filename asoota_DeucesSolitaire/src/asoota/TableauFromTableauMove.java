@@ -23,7 +23,8 @@ public class TableauFromTableauMove extends Move {
 
 	@Override
 	public boolean doMove(Solitaire game) {
-		assert(valid(game) == true); // This function can only be called if the TableauFromTableauMove is valid
+		if( valid(game) == false )
+			return false; // This function can only be called if the TableauFromTableauMove is valid
 		// If the move is valid, perform the move
 		// STEP 1: Unroll all the cards into a queue
 		Stack<Card> cards = new Stack<Card>();

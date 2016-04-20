@@ -24,7 +24,8 @@ public class TableauFromWasteMove extends Move {
 	
 	@Override
 	public boolean doMove(Solitaire game) {
-		assert(valid(game) == true); // This function can only be called if the TableauFromWasteMove is valid
+		if( valid(game) == false )
+			return false; // This function can only be called if the TableauFromWasteMove is valid
 		// If the move is valid, perform the move
 		destTableauPile.add(cardBeingDragged); // Add the card that is being dragged right now
 		((DeucesSolitaire)game).setWastePileCardCount(-1); // We have now removed a card to the WastePile and thus decrement its count
