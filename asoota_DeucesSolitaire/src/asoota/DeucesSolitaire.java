@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.Stack;
 
 import ks.common.controller.SolitaireMouseMotionAdapter;
+import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.games.Solitaire;
 import ks.common.games.SolitaireUndoAdapter;
 import ks.common.model.Card;
@@ -170,6 +171,19 @@ public class DeucesSolitaire extends Solitaire {
 			pileViews[i].setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
 			pileViews[i].setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 		}
+		
+		// Set up Mouse Controllers for the IntegerViews
+		scoreView.setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
+		scoreView.setMouseAdapter(new SolitaireReleasedAdapter(DeucesSolitaire.this));
+		scoreView.setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
+		
+		wastePileCountView.setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
+		wastePileCountView.setMouseAdapter(new SolitaireReleasedAdapter(DeucesSolitaire.this));
+		wastePileCountView.setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
+		
+		stockPileCountView.setMouseMotionAdapter(new SolitaireMouseMotionAdapter(DeucesSolitaire.this));
+		stockPileCountView.setMouseAdapter(new SolitaireReleasedAdapter(DeucesSolitaire.this));
+		stockPileCountView.setUndoAdapter(new SolitaireUndoAdapter(DeucesSolitaire.this));
 	}
 	
 	private void rollOutDeck() {
