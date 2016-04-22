@@ -55,18 +55,6 @@ public class TestControllers extends KSTestCase {
 		assertEquals(new Card(Card.FIVE, Card.CLUBS), this.deucesGame.wastePile.peek(0));
 	}
 	
-	public void testFailFoundationRelease() {
-		// Fix the FoundationPile
-		ModelFactory.init(this.deucesGame.piles[0], "5D");
-		// Run initial test cases
-		assertEquals(1, this.deucesGame.piles[0].count());
-		// Now perform a Release event on the FoundationPile
-		MouseEvent releaseOnFoundation = createReleased(this.deucesGame, this.deucesGame.pileViews[0], 1, 1);
-		this.deucesGame.pileViews[0].getMouseManager().handleMouseEvent(releaseOnFoundation); // Send off the Mouse Release to trigger the end of a drag
-		// Run final test cases
-		assertEquals(1, this.deucesGame.piles[0].count());
-	}
-	
 	public void testWasteToTableauMove() {
 		// Fix the WastePile and the TableauPile
 		ModelFactory.init(this.deucesGame.columns[0], "5C");
